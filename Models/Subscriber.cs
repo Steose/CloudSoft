@@ -10,5 +10,6 @@ public class Subscriber
 
     [Required]
     [EmailAddress]
+    [RegularExpression("^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\\.[a-zA-Z]{2,}$", ErrorMessage = "Missing top level domain")]
     public string? Email { get; set; }
 }
