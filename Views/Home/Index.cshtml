@@ -1,8 +1,26 @@
 ﻿@{
-    ViewData["Title"] = "Home Page";
+    ViewData["Title"] = "Welcome to CloudSoft";
 }
 
-<div class="text-center">
-    <h1 class="display-4">Welcome</h1>
-    <p>Learn about <a href="https://learn.microsoft.com/aspnet/core">building Web apps with ASP.NET Core</a>.</p>
+<div class="container-fluid px-0">
+    <!-- Hero Section -->
+    <div class="hero-gradient text-white py-5">
+        <div class="container py-5">
+            <div class="row align-items-center g-5">
+                <div class="col-lg-6 mx-auto text-center">
+                    <h1 class="display-3 fw-bold mb-3">Stay Connected with CloudSoft</h1>
+                    <p class="lead mb-4">
+                        Get the latest updates, news, and special offers delivered directly to your inbox.
+                        Join our newsletter community today!
+                    </p>
+                    <div class="d-grid gap-2 d-md-flex justify-content-center">
+                        <a asp-controller="Newsletter" asp-action="Subscribe"
+                           class="btn btn-light btn-lg px-4 shadow">
+                            <i class="fas fa-envelope me-2"></i>Subscribe Now
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
 </div>
