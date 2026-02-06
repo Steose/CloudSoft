@@ -50,7 +50,7 @@ public class NewsletterController : Controller
         return View(_subscribers);
     }
         [HttpPost]
-    //[ValidateAntiForgeryToken]
+    [ValidateAntiForgeryToken]
     public IActionResult Unsubscribe(string email)
     {
         var subscriber = _subscribers.FirstOrDefault(s => s.Email == email);
