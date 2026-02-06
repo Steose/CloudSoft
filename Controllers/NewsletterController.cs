@@ -43,4 +43,11 @@ public class NewsletterController : Controller
         // Return the view (using the POST-REDIRECT-GET pattern)
         return RedirectToAction(nameof(Subscribe));  // use nameof() to find the action by name during compile time
     }
+
+    [HttpGet]
+    public IActionResult Subscribers()
+    {
+        return View(_subscribers);
+    }
+
 }
