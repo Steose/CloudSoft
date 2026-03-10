@@ -2,10 +2,16 @@ using CloudSoft.Models;
 using CloudSoft.Services;
 using CloudSoft.Repositories;
 using CloudSoft.Configurations;
+using CloudSoft.Storage;
+using Microsoft.AspNetCore.Hosting.StaticWebAssets;
 using MongoDB.Driver;
 
 
 var builder = WebApplication.CreateBuilder(args);
+
+// Ensure static web assets (e.g., CloudSoft.styles.css from CSS isolation) are available
+// when running from source/non-published output across environments.
+StaticWebAssetsLoader.UseStaticWebAssets(builder.Environment, builder.Configuration);
 
 
 // Add services to the container.
@@ -55,6 +61,29 @@ else
     Console.WriteLine("Using in-memory repository");
 }
 
+// Add HttpContextAccessor for URL generation
+builder.Services.AddHttpContextAccessor();
+
+// Configure Azure Blob options
+builder.Services.Configure<AzureBlobOptions>(
+    builder.Configuration.GetSection(AzureBlobOptions.SectionName));
+
+// Check if Azure Storage should be used
+bool useAzureStorage = builder.Configuration.GetValue<bool>("FeatureFlags:UseAzureStorage");
+
+if (useAzureStorage)
+{
+    // Register Azure Blob Storage image service for production
+    builder.Services.AddSingleton<IImageService, AzureBlobImageService>();
+    Console.WriteLine("Using Azure Blob Storage for images");
+}
+else
+{
+    // Register local image service for development
+    builder.Services.AddSingleton<IImageService, LocalImageService>();
+    Console.WriteLine("Using local storage for images");
+}
+
 // Register service (depends on repository)
 builder.Services.AddScoped<INewsletterService, NewsletterService>();
 
@@ -74,6 +103,7 @@ app.UseHttpsRedirection();
 app.UseRouting();
 
 app.UseAuthorization();
+app.UseStaticFiles();
 
 app.MapStaticAssets();
 
